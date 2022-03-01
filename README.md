@@ -6,3 +6,8 @@ torchvision 0.8.1;
 opencv 4.5.0;
 numpy 0.19.2;
 matplotlib 3.3.2
+
+Credits: 
+1. https://github.com/utkuozbulak/pytorch-cnn-visualizations
+2. https://github.com/FrancescoSaverioZuppichini/A-journey-into-Convolutional-Neural-Network-visualization-
+3. https://github.com/kazuto1011/grad-cam-pytorch
