@@ -27,9 +27,7 @@ class GradCam(Base):
             self.gradients = grad_out[0]
         # store the outputs (feature maps) of this layer
         def store_outputs(module, input, outputs):
-            if module == layer:
-                # store the outputs of this layer in self.conv_outputs
-                self.conv_outputs = outputs
+            self.conv_outputs = outputs 
                 
         # Register the hooks in the forward pass to get the outputs
         layer.register_forward_hook(store_outputs)
@@ -45,7 +43,7 @@ class GradCam(Base):
         modules = module2traced(self.module, input_image)
         # Find the last convolutional layer by enumerating
         for i, module in enumerate(modules):
-            if isinstance(module, Conv2d):
+            if isinstance(module, Conv2d): # Return whether an object is an instance of a class or of a subclass thereof.
                 # Here the layer is the last convolutional layer
                 layer = module
         
@@ -59,7 +57,7 @@ class GradCam(Base):
         predictions = self.module(input_var)
         # Creat a empty tenor with the same size as predictions
         one_hot_output = torch.zeros(predictions.size()).to(self.device)
-        # Clear the target class for backpropagate
+        # Clear the target class for backpropagation
         one_hot_output[0][target_class] = 1
         # Call backward on predictions
         # Becaues the predictions is non-scacle, so the 'one_hot_output' is used to transform it to a scalar for backpropagating

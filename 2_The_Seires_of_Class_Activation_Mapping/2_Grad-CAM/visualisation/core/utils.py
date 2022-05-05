@@ -14,29 +14,33 @@ image_net_preprocessing = Compose([
     )
 ])
 
-# inverse the normalization operation to obtain the original image
-class NormalizeInverse(Normalize):
+# # inverse the normalization operation to obtain the original image
+# class NormalizeInverse(Normalize):
 
-    def __init__(self, mean, std):
-        mean = torch.Tensor(mean)
-        std = torch.Tensor(std)
-        # inverse the std value
-        std_inv = 1 / std
-        # inverse the mean value
-        mean_inv = -mean * std_inv
-        # Use the inversed std and mean values to perform the Normalize operation on the normalized image data
-        super().__init__(mean=mean_inv, std=std_inv)
+#     def __init__(self, mean, std):
+#         mean = torch.Tensor(mean)
+#         std = torch.Tensor(std)
+#         # inverse the std value
+#         std_inv = 1 / std
+#         # inverse the mean value
+#         mean_inv = -mean * std_inv
+#         # Use the inversed std and mean values to perform the Normalize operation on the normalized image data
+#         super().__init__(mean=mean_inv, std=std_inv)
 
-    def __call__(self, tensor):
-        # Return a copy of the inversed normalized image data (original input image)
-        return super().__call__(tensor.clone())
+#     def __call__(self, tensor):
+#         # Return a copy of the inversed normalized image data (original input image)
+#         return super().__call__(tensor.clone())
+
+# image_net_postprocessing = Compose([
+#     NormalizeInverse(
+#         mean=[0.485, 0.456, 0.406],
+#         std=[0.229, 0.224, 0.225])
+# ])
 
 # Postprocess->inverse the normalization operation
-image_net_postprocessing = Compose([
-    NormalizeInverse(
-        mean=[0.485, 0.456, 0.406],
-        std=[0.229, 0.224, 0.225])
-])
+image_net_postprocessing = Compose([Normalize(mean = [ 0., 0., 0. ], std = [ 1/0.229, 1/0.224, 1/0.225 ]),
+                                Normalize(mean = [ -0.485, -0.456, -0.406 ], std = [ 1., 1., 1. ]),
+                               ]) # let's try a clever way
 
 # transform tensor to cam 
 def tensor2cam(image, cam):
@@ -59,7 +63,7 @@ def image2cam(image, cam):
     cam = np.uint8(cam * 255.0)
     # apply the colormap JET
     img_with_cam = cv2.applyColorMap(cam, cv2.COLORMAP_JET)
-    # convert the BGR image to RGB image
+    # convert the BGR (used by opencv) image to RGB image
     img_with_cam = cv2.cvtColor(img_with_cam, cv2.COLOR_BGR2RGB)
     # overlaying
     img_with_cam = img_with_cam + (image * 255)
