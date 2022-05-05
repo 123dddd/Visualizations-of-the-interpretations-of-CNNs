@@ -7,6 +7,8 @@ opencv 4.5.0;
 numpy 0.19.2;
 matplotlib 3.3.2
 
+PLUS: If you are interested in exploring more advanced things about Model Interpretability (for PyTorch), have a look https://captum.ai/. It provides easy-to-use APIs for visulization as well as interpretation of the DL models. 
+
 Credits: 
 1. https://github.com/utkuozbulak/pytorch-cnn-visualizations
 2. https://github.com/FrancescoSaverioZuppichini/A-journey-into-Convolutional-Neural-Network-visualization-
